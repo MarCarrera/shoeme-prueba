@@ -11,17 +11,29 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    double fontSize = screenHeight * 0.02;
+    double paddingSize = screenWidth * 0.05;
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
           backgroundColor: TColors.backgrondColor,
           appBar: AppBar(
             backgroundColor: TColors.backgrondColor,
-            title: const Text('Bienvenido'),
+            title: Text(
+              'ShoeMe App',
+              style: TextStyle(
+                  fontSize: fontSize * 1.4, fontWeight: FontWeight.w700),
+            ),
             actions: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Icon(Icons.notification_add_rounded),
+                padding: EdgeInsets.symmetric(horizontal: paddingSize),
+                child: Icon(
+                  Icons.notification_add_rounded,
+                  size: fontSize * 1.4,
+                ),
               )
             ],
           ),
