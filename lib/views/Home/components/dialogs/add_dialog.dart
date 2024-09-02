@@ -4,7 +4,7 @@ import 'package:lottie/lottie.dart';
 
 import '../../../../controller/request.dart';
 
-class EditDialog extends StatefulWidget {
+class AddDialog extends StatefulWidget {
   final String title;
   final TextEditingController modeloC;
   final TextEditingController marcaC;
@@ -16,7 +16,7 @@ class EditDialog extends StatefulWidget {
   final Function onRegisterSuccess;
   
 
-  const EditDialog({
+  const AddDialog({
     super.key,
     required this.title,
     required this.modeloC,
@@ -31,10 +31,10 @@ class EditDialog extends StatefulWidget {
 
   @override
   // ignore: library_private_types_in_public_api
-  _EditDialogState createState() => _EditDialogState();
+  _AddDialogState createState() => _AddDialogState();
 }
 
-class _EditDialogState extends State<EditDialog> {
+class _AddDialogState extends State<AddDialog> {
   late TextEditingController _modeloC;
   late TextEditingController _marcaC;
   late TextEditingController _numPieC;
@@ -195,7 +195,7 @@ void showEditDialog({
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return EditDialog(
+      return AddDialog(
         title: title,
         obscureText: obscureText,
         modeloC: modeloC,

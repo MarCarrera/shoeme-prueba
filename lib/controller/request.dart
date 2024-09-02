@@ -85,6 +85,32 @@ Future<bool> addNewShoe(
   }
 }
 
+Future<bool> updateShoe(
+    {
+    required String idCalzado,
+    required String precio}) async {
+  var data = {
+    'opcion': '4',
+    'id_calzado': idCalzado,
+    'precio': precio,
+  };
+  try {
+    final response = await http.post(
+      url,
+      body: data,
+    );
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      print('Error al agregar: ${response.reasonPhrase}');
+      return false;
+    }
+  } catch (e) {
+    print('Error: $e');
+    return false;
+  }
+}
+
 Future<bool> deleteShoe({required String idCalzado}) async {
   var data = {'opcion': '5', 'id_calzado': idCalzado};
   try {

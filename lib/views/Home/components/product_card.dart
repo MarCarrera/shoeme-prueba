@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shoeme_app/utils/constans.dart';
 
 import '../../../controller/request.dart';
+import 'dialogs/edit_dialog.dart';
 
 class ProductCard extends StatefulWidget {
   final Function onRegisterSuccess;
@@ -13,10 +14,10 @@ class ProductCard extends StatefulWidget {
     required this.precio,
     required this.numero,
     required this.existencia,
-    required this.sucursal, required 
-    this.onRegisterSuccess, 
+    required this.sucursal,
+    required this.onRegisterSuccess,
   });
-final String idCalzado;
+  final String idCalzado;
   final String marca;
   final String modelo;
   final String precio;
@@ -29,6 +30,18 @@ final String idCalzado;
 }
 
 class _ProductCardState extends State<ProductCard> {
+  TextEditingController precioC = TextEditingController();
+
+  Future<void> _editarPrecioCalzado() async {
+    showUpdateDialog(
+      context: context,
+      title: 'Editar Precio',
+      precioC: precioC,
+      onRegisterSuccess: widget.onRegisterSuccess,
+      idCalzado: widget.idCalzado,
+    );
+  }
+
   void _logout(BuildContext context) {
     showDialog(
       context: context,
@@ -42,10 +55,10 @@ class _ProductCardState extends State<ProductCard> {
           ),
           TextButton(
             onPressed: () async {
-              bool response = await deleteShoe(idCalzado: widget.idCalzado );
-              
+              bool response = await deleteShoe(idCalzado: widget.idCalzado);
+
               if (response) {
-                Navigator.of(context).pop(response); 
+                Navigator.of(context).pop(response);
 
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Calzado agregado con éxito.')),
@@ -54,7 +67,8 @@ class _ProductCardState extends State<ProductCard> {
                 widget.onRegisterSuccess();
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('No se pudo agregar el calzado.')),
+                  const SnackBar(
+                      content: Text('No se pudo agregar el calzado.')),
                 );
               }
             },
@@ -134,9 +148,14 @@ class _ProductCardState extends State<ProductCard> {
                                               fontWeight: FontWeight.w700)),
                                     ],
                                   ),
-                                  Icon(
-                                    Icons.edit,
-                                    size: fontSize * 1.1,
+                                  GestureDetector(
+                                    onTap: () {
+                                      _editarPrecioCalzado();
+                                    },
+                                    child: Icon(
+                                      Icons.edit,
+                                      size: fontSize * 1.1,
+                                    ),
                                   ),
                                   GestureDetector(
                                     onTap: () {

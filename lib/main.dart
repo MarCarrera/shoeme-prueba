@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shoeme_app/utils/constans.dart';
-
-import 'utils/prueba.dart';
 import 'views/Home/home_page.dart';
 
 void main() => runApp(const MyApp());
