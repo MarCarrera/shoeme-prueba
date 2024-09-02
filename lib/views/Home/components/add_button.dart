@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../utils/constans.dart';
+import 'edit_dialog.dart';
 
 class AddButton extends StatefulWidget {
   const AddButton({
@@ -11,7 +12,27 @@ class AddButton extends StatefulWidget {
   State<AddButton> createState() => _AddButtonState();
 }
 
+TextEditingController modeloC = TextEditingController();
+TextEditingController marcaC = TextEditingController();
+TextEditingController numPieC = TextEditingController();
+TextEditingController precioC = TextEditingController();
+TextEditingController existenciaC = TextEditingController();
+TextEditingController almacenC = TextEditingController();
+
 class _AddButtonState extends State<AddButton> {
+  Future<void> _agregarCalzado() async {
+    showEditDialog(
+      context: context,
+      title: 'Agregar Calzado',
+      modeloC: modeloC,
+      marcaC: marcaC,
+      numPieC: numPieC,
+      precioC: precioC,
+      existenciaC: existenciaC,
+      almacenC: almacenC,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -25,14 +46,8 @@ class _AddButtonState extends State<AddButton> {
       child: Padding(
         padding: EdgeInsets.only(left: 0, top: 0),
         child: ElevatedButton(
-          onPressed: () {
-            // Navigator.of(context).push(
-            //   MaterialPageRoute(
-            //     builder: (context) {
-            //       return const AddScreen();
-            //     },
-            //   ),
-            // );
+          onPressed: () async {
+            await _agregarCalzado();
           },
           style: ElevatedButton.styleFrom(
             foregroundColor: Colors.white,

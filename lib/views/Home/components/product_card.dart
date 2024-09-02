@@ -4,7 +4,20 @@ import 'package:shoeme_app/utils/constans.dart';
 class ProductCard extends StatefulWidget {
   const ProductCard({
     super.key,
+    required this.marca,
+    required this.modelo,
+    required this.precio,
+    required this.numero,
+    required this.existencia,
+    required this.sucursal,
   });
+
+  final String marca;
+  final String modelo;
+  final String precio;
+  final String numero;
+  final String existencia;
+  final String sucursal;
 
   @override
   State<ProductCard> createState() => _ProductCardState();
@@ -18,7 +31,7 @@ class _ProductCardState extends State<ProductCard> {
     double fontSize = screenHeight * 0.02;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 15),
       child: Container(
         height: screenHeight * 0.13, //125,
         width: screenWidth * 0.9, //350,
@@ -60,7 +73,7 @@ class _ProductCardState extends State<ProductCard> {
                                         ),
                                       ),
                                       Text(
-                                        'Adidas',
+                                        widget.marca,
                                         style: TextStyle(
                                             fontSize: fontSize, //16,
                                             fontWeight: FontWeight.w700),
@@ -69,12 +82,12 @@ class _ProductCardState extends State<ProductCard> {
                                   ),
                                   Row(
                                     children: [
-                                      Text('Mod:',
+                                      Text('Modelo:',
                                           style: TextStyle(fontSize: fontSize)),
                                       SizedBox(
                                         width: 4,
                                       ),
-                                      Text('AD-5419',
+                                      Text(widget.modelo,
                                           style: TextStyle(
                                               fontSize: fontSize,
                                               fontWeight: FontWeight.w700)),
@@ -102,7 +115,7 @@ class _ProductCardState extends State<ProductCard> {
                                     Text('Precio:',
                                         style: TextStyle(
                                             fontSize: fontSize * 0.8)),
-                                    Text('580.00',
+                                    Text('\$${widget.precio}',
                                         style: TextStyle(
                                             color: TColors.yellowColor,
                                             fontSize: fontSize * 1.1,
@@ -111,10 +124,10 @@ class _ProductCardState extends State<ProductCard> {
                                 ),
                                 Column(
                                   children: [
-                                    Text('Número:',
+                                    Text('Número Pie:',
                                         style: TextStyle(
                                             fontSize: fontSize * 0.8)),
-                                    Text('#29',
+                                    Text('#${widget.numero}',
                                         style: TextStyle(
                                             color: TColors.greenColor,
                                             fontSize: fontSize * 1.1,
@@ -127,7 +140,7 @@ class _ProductCardState extends State<ProductCard> {
                                         style: TextStyle(
                                             fontSize: fontSize * 0.8)),
                                     Text(
-                                      '56 pzs',
+                                      '${widget.existencia} pzs',
                                       style: TextStyle(
                                           color: TColors.blueColor,
                                           fontSize: fontSize * 1.1,
