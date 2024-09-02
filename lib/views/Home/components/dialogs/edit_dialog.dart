@@ -72,6 +72,7 @@ class _EditDialogState extends State<EditDialog> {
             );
 
             if (response) {
+              widget.precioC.text = '';
               Navigator.of(context).pop(response);
 
               ScaffoldMessenger.of(context).showSnackBar(
@@ -81,7 +82,7 @@ class _EditDialogState extends State<EditDialog> {
               widget.onRegisterSuccess();
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('No se pudo editar el calzado.')),
+                const SnackBar(content: Text('No se guardaron los cambios.')),
               );
             }
           },
@@ -106,8 +107,8 @@ void showUpdateDialog({
         title: title,
         obscureText: obscureText,
         precioC: precioC,
-        onRegisterSuccess: onRegisterSuccess, 
-        idCalzado: idCalzado, 
+        onRegisterSuccess: onRegisterSuccess,
+        idCalzado: idCalzado,
       );
     },
   );

@@ -46,8 +46,8 @@ class _ProductCardState extends State<ProductCard> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Borrar calzado'),
-        content: const Text('¿Estás seguro de borrar este calzado?'),
+        title: const Text('Eliminar calzado'),
+        content: const Text('¿Estás seguro de eliminar este calzado?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -61,18 +61,18 @@ class _ProductCardState extends State<ProductCard> {
                 Navigator.of(context).pop(response);
 
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Calzado agregado con éxito.')),
+                  const SnackBar(content: Text('Calzado eliminado con éxito.')),
                 );
                 // Llamar al callback para refrescar la vista de HomePage
                 widget.onRegisterSuccess();
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                      content: Text('No se pudo agregar el calzado.')),
+                      content: Text('No se pudo eliminar el calzado.')),
                 );
               }
             },
-            child: const Text('Si, borrar'),
+            child: const Text('Si, eliminar'),
           ),
         ],
       ),

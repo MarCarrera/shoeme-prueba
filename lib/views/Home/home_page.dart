@@ -123,11 +123,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            Positioned(
-              bottom: 16,
-              right: 16,
-              child: AddButton(onRefreshSuccess: _refreshData),
-            ),
+            AddButton(onRefreshSuccess: _refreshData),
           ],
         ),
       ),

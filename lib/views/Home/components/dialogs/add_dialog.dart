@@ -14,7 +14,6 @@ class AddDialog extends StatefulWidget {
   final TextEditingController almacenC;
   final bool obscureText;
   final Function onRefreshSuccess;
-  
 
   const AddDialog({
     super.key,
@@ -25,7 +24,7 @@ class AddDialog extends StatefulWidget {
     required this.precioC,
     required this.existenciaC,
     required this.almacenC,
-    this.obscureText = false, 
+    this.obscureText = false,
     required this.onRefreshSuccess,
   });
 
@@ -143,37 +142,44 @@ class _AddDialogState extends State<AddDialog> {
         TextButton(
           child: const Text('Registrar'),
           onPressed: () async {
-  // Actualizar los controladores de widget con los textos ingresados
-  widget.modeloC.text = _modeloC.text;
-  widget.marcaC.text = _marcaC.text;
-  widget.numPieC.text = _numPieC.text;
-  widget.precioC.text = _precioC.text;
-  widget.existenciaC.text = _existenciaC.text;
-  widget.almacenC.text = _almacenC.text;
+            // Actualizar los controladores de widget con los textos ingresados
+            widget.modeloC.text = _modeloC.text;
+            widget.marcaC.text = _marcaC.text;
+            widget.numPieC.text = _numPieC.text;
+            widget.precioC.text = _precioC.text;
+            widget.existenciaC.text = _existenciaC.text;
+            widget.almacenC.text = _almacenC.text;
 
-  bool response = await addNewShoe(
-    modelo: widget.modeloC.text,
-    marca: widget.marcaC.text,
-    numPie: widget.numPieC.text,
-    precio: widget.precioC.text,
-    existencia: widget.existenciaC.text,
-    almacen: widget.almacenC.text,
-  );
+            bool response = await addNewShoe(
+              modelo: widget.modeloC.text,
+              marca: widget.marcaC.text,
+              numPie: widget.numPieC.text,
+              precio: widget.precioC.text,
+              existencia: widget.existenciaC.text,
+              almacen: widget.almacenC.text,
+            );
 
-  if (response) {
-    Navigator.of(context).pop(response); 
+            if (response) {
+              widget.modeloC.clear();
+              widget.marcaC.clear();
+              widget.numPieC.clear();
+              widget.precioC.clear();
+              widget.existenciaC.clear();
+              widget.almacenC.clear();
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Calzado agregado con éxito.')),
-    );
-    // Llamar al callback para refrescar la vista de HomePage
-    widget.onRefreshSuccess();
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('No se pudo agregar el calzado.')),
-    );
-  }
-},
+              Navigator.of(context).pop(response);
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Calzado agregado con éxito.')),
+              );
+              // Llamar al callback para refrescar la vista de HomePage
+              widget.onRefreshSuccess();
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('No se pudo agregar el calzado.')),
+              );
+            }
+          },
         ),
       ],
     );

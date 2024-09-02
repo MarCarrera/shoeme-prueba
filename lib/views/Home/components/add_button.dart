@@ -44,8 +44,8 @@ class _AddButtonState extends State<AddButton> {
     double paddingSize = screenWidth * 0.05;
 
     return Positioned(
-      top: screenHeight * 0.78,
-      left: screenWidth * 0.72,
+      top: screenHeight * 0.82,
+      left: screenWidth * 0.8,
       child: Padding(
         padding: EdgeInsets.only(left: 0, top: 0),
         child: ElevatedButton(

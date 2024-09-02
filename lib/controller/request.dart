@@ -7,7 +7,7 @@ import '../models/view_model.dart';
 
 //final url Produccion
 final url = Uri.parse("https://marcarrera.site/shoeme_api/controller.php");
-
+//Obtener todos los calzados
 Future<List<Calzado>> getShoes() async {
   var data = {
     'opcion': '1',
@@ -23,14 +23,14 @@ Future<List<Calzado>> getShoes() async {
       var jsonResponse = jsonDecode(response.body) as List;
       return jsonResponse.map((item) => Calzado.fromJson(item)).toList();
     } else {
-      throw Exception('Error al obtener entrenamientos');
+      throw Exception('Error al obtener calzados');
     }
   } catch (e) {
     print('Error: $e');
     return [];
   }
 }
-
+//Obtener calzados por id de almacenamiento
 Future<List<Calzado>> getShoesById({required String idAlmacen}) async {
   var data = {'opcion': '2', 'id_almacen': idAlmacen};
   try {
@@ -44,14 +44,14 @@ Future<List<Calzado>> getShoesById({required String idAlmacen}) async {
       var jsonResponse = jsonDecode(response.body) as List;
       return jsonResponse.map((item) => Calzado.fromJson(item)).toList();
     } else {
-      throw Exception('Error al obtener entrenamientos');
+      throw Exception('Error al obtener calzados');
     }
   } catch (e) {
     print('Error: $e');
     return [];
   }
 }
-
+//Agregar un nuevo calzado
 Future<bool> addNewShoe(
     {required String modelo,
     required String marca,
@@ -84,7 +84,7 @@ Future<bool> addNewShoe(
     return false;
   }
 }
-
+//Actualizar precio de calzado
 Future<bool> updateShoe(
     {
     required String idCalzado,
@@ -102,7 +102,7 @@ Future<bool> updateShoe(
     if (response.statusCode == 200) {
       return true;
     } else {
-      print('Error al agregar: ${response.reasonPhrase}');
+      print('Error al editar: ${response.reasonPhrase}');
       return false;
     }
   } catch (e) {
@@ -110,7 +110,7 @@ Future<bool> updateShoe(
     return false;
   }
 }
-
+//Eliminar calzado 
 Future<bool> deleteShoe({required String idCalzado}) async {
   var data = {'opcion': '5', 'id_calzado': idCalzado};
   try {
@@ -121,7 +121,7 @@ Future<bool> deleteShoe({required String idCalzado}) async {
     if (response.statusCode == 200) {
       return true;
     } else {
-      print('Error al agregar: ${response.reasonPhrase}');
+      print('Error al eliminar: ${response.reasonPhrase}');
       return false;
     }
   } catch (e) {
@@ -129,7 +129,7 @@ Future<bool> deleteShoe({required String idCalzado}) async {
     return false;
   }
 }
-
+//obtener id y nombre de sucursales
 Future<List<Sucursal>> getSucursales() async {
   var data = {'opcion': '6'};
   try {
@@ -143,7 +143,7 @@ Future<List<Sucursal>> getSucursales() async {
       var jsonResponse = jsonDecode(response.body) as List;
       return jsonResponse.map((item) => Sucursal.fromJson(item)).toList();
     } else {
-      throw Exception('Error al obtener entrenamientos');
+      throw Exception('Error al obtener sucursales');
     }
   } catch (e) {
     print('Error: $e');

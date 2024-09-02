@@ -16,7 +16,7 @@ class Calzado {
     required this.existencia,
     required this.nombreAlmacen,
   });
-
+//funcion que mapea la respuasta para el llenado del modelo
   factory Calzado.fromJson(Map<String, dynamic> json) {
     return Calzado(
         idCalzado: json['id_calzado'],
@@ -37,7 +37,7 @@ class Sucursal {
 
   factory Sucursal.fromJson(Map<String, dynamic> json) {
     return Sucursal(
-      idSucursal: json['id_almacen'] ?? 0, // Default value if null
+      idSucursal: json['id_almacen'] ?? 0,
       nombre: json['nombre'] ?? '',
     );
   }
