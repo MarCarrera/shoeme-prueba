@@ -104,7 +104,7 @@ class _SearchInputState extends State<SearchInput> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  selectedSucursalName ?? 'Buscar modelo',
+                  selectedSucursalName ?? 'Buscar por sucursal',
                   style: TextStyle(fontSize: fontSize * 0.9),
                 ),
                 GestureDetector(
