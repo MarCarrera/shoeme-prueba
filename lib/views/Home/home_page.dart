@@ -25,12 +25,12 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     futureCalzado = getShoes();
   }
+
   void _refreshData() {
     setState(() {
       futureCalzado = getShoes();
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
                         // Muestra un indicador de carga mientras los datos se están cargando
                         return Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
-                        // Muestra un mensaje de error si ocurre un error
+                        // Muestra un mensaje de error
                         return Center(child: Text('Error: ${snapshot.error}'));
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                         // Muestra un mensaje si no hay datos disponibles
@@ -77,6 +77,8 @@ class _HomePageState extends State<HomePage> {
                               numero: calzado.numPie.toString(),
                               existencia: calzado.existencia.toString(),
                               sucursal: calzado.nombreAlmacen,
+                              idCalzado: calzado.idCalzado.toString(), 
+                              onRegisterSuccess: _refreshData,
                             );
                           },
                         );

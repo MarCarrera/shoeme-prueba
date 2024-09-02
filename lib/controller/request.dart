@@ -19,7 +19,7 @@ Future<List<Calzado>> getShoes() async {
     );
 
     if (response.statusCode == 200) {
-      print(response.body);
+      //print(response.body);
       var jsonResponse = jsonDecode(response.body) as List;
       return jsonResponse.map((item) => Calzado.fromJson(item)).toList();
     } else {
@@ -64,32 +64,21 @@ Future<bool> addNewShoe(
   }
 }
 
-
-/*Future<bool> addNewShoe(String modelo, String marca, String numPie, String precio,
-    String existencia, String almacen) async {
-  var data = {
-    'opcion': '3',
-    'modelo': modelo,
-    'marca': marca,
-    'num_pie': numPie,
-    'precio': precio,
-    'existencia': existencia,
-    'almacen': almacen
-  };
-
+Future<bool> deleteShoe({required String idCalzado}) async {
+  var data = {'opcion': '5', 'id_calzado': idCalzado};
   try {
     final response = await http.post(
       url,
       body: data,
     );
-
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception('Error al enviar token');
+      print('Error al agregar: ${response.reasonPhrase}');
+      return false;
     }
   } catch (e) {
     print('Error: $e');
     return false;
   }
-}*/
+}

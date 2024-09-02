@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:shoeme_app/utils/constans.dart';
 
+import '../../../controller/request.dart';
+
 class ProductCard extends StatefulWidget {
+  final Function onRegisterSuccess;
   const ProductCard({
     super.key,
+    required this.idCalzado,
     required this.marca,
     required this.modelo,
     required this.precio,
     required this.numero,
     required this.existencia,
-    required this.sucursal,
+    required this.sucursal, required 
+    this.onRegisterSuccess, 
   });
-
+final String idCalzado;
   final String marca;
   final String modelo;
   final String precio;
@@ -24,6 +29,42 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> {
+  void _logout(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Borrar calzado'),
+        content: const Text('¿Estás seguro de borrar este calzado?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () async {
+              bool response = await deleteShoe(idCalzado: widget.idCalzado );
+              
+              if (response) {
+                Navigator.of(context).pop(response); 
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Calzado agregado con éxito.')),
+                );
+                // Llamar al callback para refrescar la vista de HomePage
+                widget.onRegisterSuccess();
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('No se pudo agregar el calzado.')),
+                );
+              }
+            },
+            child: const Text('Si, borrar'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -97,9 +138,14 @@ class _ProductCardState extends State<ProductCard> {
                                     Icons.edit,
                                     size: fontSize * 1.1,
                                   ),
-                                  Icon(
-                                    Icons.delete,
-                                    size: fontSize * 1.1,
+                                  GestureDetector(
+                                    onTap: () {
+                                      _logout(context);
+                                    },
+                                    child: Icon(
+                                      Icons.delete,
+                                      size: fontSize * 1.1,
+                                    ),
                                   ),
                                 ],
                               ),
