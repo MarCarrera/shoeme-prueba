@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../../utils/constans.dart';
-import 'edit_dialog.dart';
+import 'dialogs/add_dialog.dart';
 
 class AddButton extends StatefulWidget {
+  final Function onRegisterSuccess;
   const AddButton({
     super.key,
+    required this.onRegisterSuccess,
   });
 
   @override
@@ -30,6 +32,7 @@ class _AddButtonState extends State<AddButton> {
       precioC: precioC,
       existenciaC: existenciaC,
       almacenC: almacenC,
+      onRegisterSuccess: widget.onRegisterSuccess,
     );
   }
 

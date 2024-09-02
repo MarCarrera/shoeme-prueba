@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shoeme_app/controller/request.dart';
 import 'package:shoeme_app/utils/constans.dart';
-import '../../controller/service.dart';
 import '../../models/view_model.dart';
 
 import 'components/add_button.dart';
@@ -19,15 +18,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final HomeService homeService = HomeService();
-
   late Future<List<Calzado>> futureCalzado;
 
   @override
   void initState() {
     super.initState();
-    futureCalzado = getShoes(); // Inicializa la llamada a fetchCalzados
+    futureCalzado = getShoes();
   }
+  void _refreshData() {
+    setState(() {
+      futureCalzado = getShoes();
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +63,9 @@ class _HomePageState extends State<HomePage> {
                         return Center(
                             child: Text('No hay calzados disponibles'));
                       } else {
-                        // Muestra la lista de calzados si los datos están disponibles
-                        final calzados = snapshot.data!;
+                        // Ordena la lista por id de manera descendiente
+                        final calzados = snapshot.data!
+                          ..sort((a, b) => b.idCalzado.compareTo(a.idCalzado));
                         return ListView.builder(
                           itemCount: calzados.length,
                           itemBuilder: (context, index) {
@@ -89,7 +93,7 @@ class _HomePageState extends State<HomePage> {
             Positioned(
               bottom: 16,
               right: 16,
-              child: AddButton(),
+              child: AddButton(onRegisterSuccess: _refreshData),
             ),
           ],
         ),

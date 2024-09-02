@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../../controller/request.dart';
+import '../../../../controller/request.dart';
 
 class EditDialog extends StatefulWidget {
   final String title;
@@ -13,6 +13,8 @@ class EditDialog extends StatefulWidget {
   final TextEditingController existenciaC;
   final TextEditingController almacenC;
   final bool obscureText;
+  final Function onRegisterSuccess;
+  
 
   const EditDialog({
     super.key,
@@ -23,7 +25,8 @@ class EditDialog extends StatefulWidget {
     required this.precioC,
     required this.existenciaC,
     required this.almacenC,
-    this.obscureText = false,
+    this.obscureText = false, 
+    required this.onRegisterSuccess,
   });
 
   @override
@@ -120,7 +123,7 @@ class _EditDialogState extends State<EditDialog> {
             ),
             TextField(
               controller: _almacenC,
-              keyboardType: TextInputType.text,
+              keyboardType: TextInputType.number,
               obscureText: widget.obscureText,
               decoration: const InputDecoration(
                   border: OutlineInputBorder(
@@ -140,33 +143,37 @@ class _EditDialogState extends State<EditDialog> {
         TextButton(
           child: const Text('Registrar'),
           onPressed: () async {
-            widget.modeloC.text = _modeloC.text;
-            widget.marcaC.text = _marcaC.text;
-            widget.numPieC.text = _numPieC.text;
-            widget.precioC.text = _precioC.text;
-            widget.existenciaC.text = _existenciaC.text;
-            widget.almacenC.text = _almacenC.text;
-            await addNewShoe(
-               modelo: widget.modeloC.text, 
-               marca: widget.marcaC.text,
-              numPie: widget.numPieC.text, 
-              precio:  widget.precioC.text, 
-              existencia: widget.existenciaC.text, 
-              almacen: widget.almacenC.text,
-              
-            );
-            Navigator.of(context).pop();
-            // Dialogs.bottomMaterialDialog(
-            //   msg: 'Registro exitoso.',
-            //   title: 'Agregado!',
-            //   color: Colors.white,
-            //   lottieBuilder: Lottie.asset(
-            //     'assets/js/cong_example.json',
-            //     fit: BoxFit.contain,
-            //   ),
-            //   context: context,
-            // );
-          },
+  // Actualizar los controladores de widget con los textos ingresados
+  widget.modeloC.text = _modeloC.text;
+  widget.marcaC.text = _marcaC.text;
+  widget.numPieC.text = _numPieC.text;
+  widget.precioC.text = _precioC.text;
+  widget.existenciaC.text = _existenciaC.text;
+  widget.almacenC.text = _almacenC.text;
+
+  bool response = await addNewShoe(
+    modelo: widget.modeloC.text,
+    marca: widget.marcaC.text,
+    numPie: widget.numPieC.text,
+    precio: widget.precioC.text,
+    existencia: widget.existenciaC.text,
+    almacen: widget.almacenC.text,
+  );
+
+  if (response) {
+    Navigator.of(context).pop(response); 
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Calzado agregado con éxito.')),
+    );
+    // Llamar al callback para refrescar la vista de HomePage
+    widget.onRegisterSuccess();
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('No se pudo agregar el calzado.')),
+    );
+  }
+},
         ),
       ],
     );
@@ -183,6 +190,7 @@ void showEditDialog({
   required TextEditingController existenciaC,
   required TextEditingController almacenC,
   bool obscureText = false,
+  required Function onRegisterSuccess, // Nuevo parámetro
 }) {
   showDialog(
     context: context,
@@ -196,6 +204,7 @@ void showEditDialog({
         precioC: precioC,
         existenciaC: existenciaC,
         almacenC: almacenC,
+        onRegisterSuccess: onRegisterSuccess, // Pasar el callback al dialogo
       );
     },
   );

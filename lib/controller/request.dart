@@ -31,7 +31,7 @@ Future<List<Calzado>> getShoes() async {
   }
 }
 
-Future<void> addNewShoe(
+Future<bool> addNewShoe(
     {required String modelo,
     required String marca,
     required String numPie,
@@ -47,16 +47,23 @@ Future<void> addNewShoe(
     'existencia': existencia,
     'id_almacen': almacen
   };
-  final response = await http.post(
-    url,
-    body: data,
-  );
-  if (response.statusCode == 200) {
-    print('Calzado agregado exitosamente');
-  } else {
-    print('Error al agregar: ${response.reasonPhrase}');
+  try {
+    final response = await http.post(
+      url,
+      body: data,
+    );
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      print('Error al agregar: ${response.reasonPhrase}');
+      return false;
+    }
+  } catch (e) {
+    print('Error: $e');
+    return false;
   }
 }
+
 
 /*Future<bool> addNewShoe(String modelo, String marca, String numPie, String precio,
     String existencia, String almacen) async {
