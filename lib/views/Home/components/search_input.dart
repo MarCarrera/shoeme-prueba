@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:shoeme_app/models/view_model.dart';
+
+import '../../../controller/request.dart';
 
 class SearchInput extends StatefulWidget {
+  final Function(List<Calzado>) onCalzadosSelected;
   const SearchInput({
     super.key,
+    required this.onCalzadosSelected,
   });
 
   @override
@@ -10,6 +15,12 @@ class SearchInput extends StatefulWidget {
 }
 
 class _SearchInputState extends State<SearchInput> {
+  String? selectedSucursalName;
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -17,32 +28,89 @@ class _SearchInputState extends State<SearchInput> {
     double fontSize = screenHeight * 0.02;
     double paddingSize = screenWidth * 0.05;
 
+    final String nombreSucursal;
+
+    void _showSearchModal(
+        BuildContext context, Function(List<Calzado>) onCalzadosSelected) {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          return Container(
+            height: screenHeight * 0.2,
+            child: FutureBuilder<List<Sucursal>>(
+              future: getSucursales(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(child: Text('No hay datos disponibles.'));
+                } else {
+                  return ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      final item = snapshot.data![index];
+                      return ListTile(
+                        title: Text(item.nombre),
+                        onTap: () async {
+                          setState(() {
+                        selectedSucursalName = item.nombre;
+                        });
+                          Navigator.pop(context);
+                          print('seleccionado: ${item.idSucursal}');
+                          List<Calzado> calzados = await getShoesById(
+                              idAlmacen: item.idSucursal.toString());
+                          //se notifica a Home los calzados obtenidos
+                          widget.onCalzadosSelected(calzados);
+                        },
+                      );
+                    },
+                  );
+                }
+              },
+            ),
+          );
+        },
+      );
+    }
+
     return Padding(
       padding: EdgeInsets.only(top: paddingSize),
-      child: Container(
-        height: screenHeight * 0.052, //125,
-        width: screenWidth * 0.7,
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(36),
-            boxShadow: [
-              BoxShadow(
-                  color: Color(0x4A828282),
-                  offset: Offset(0, 6),
-                  blurRadius: 8,
-                  spreadRadius: 4)
-            ]),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Buscar modelo',
-                style: TextStyle(fontSize: fontSize * 0.9),
-              ),
-              Icon(Icons.search)
-            ],
+      child: GestureDetector(
+        onTap: () {
+          _showSearchModal(context, widget.onCalzadosSelected);
+        },
+        child: Container(
+          height: screenHeight * 0.052, //125,
+          width: screenWidth * 0.7,
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(36),
+              boxShadow: [
+                BoxShadow(
+                    color: Color(0x4A828282),
+                    offset: Offset(0, 6),
+                    blurRadius: 8,
+                    spreadRadius: 4)
+              ]),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  selectedSucursalName ?? 'Buscar modelo', 
+                  style: TextStyle(fontSize: fontSize * 0.9),
+                ),
+                GestureDetector(
+                    onTap: () {
+                      print('Buscar..');
+                    },
+                    child: Icon(Icons.search))
+              ],
+            ),
           ),
         ),
       ),

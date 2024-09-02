@@ -19,6 +19,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late Future<List<Calzado>> futureCalzado;
+  bool hasCalzados = true;
 
   @override
   void initState() {
@@ -29,6 +30,22 @@ class _HomePageState extends State<HomePage> {
   void _refreshData() {
     setState(() {
       futureCalzado = getShoes();
+    });
+  }
+  //actualizar el futuro al consultar calzados por sucursal
+  void _updateCalzados(List<Calzado> calzados) {
+    setState(() {
+      futureCalzado = Future.value(calzados);
+    });
+  }
+  void _onCalzadosSelected(List<Calzado> calzados) {
+    setState(() {
+      if (calzados.isEmpty) {
+        hasCalzados = false;
+      } else {
+        hasCalzados = true;
+        futureCalzado = Future.value(calzados); // Actualiza la lista de calzados
+      }
     });
   }
 
@@ -44,7 +61,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Column(
               children: [
-                SearchInput(),
+                SearchInput(onCalzadosSelected: _updateCalzados),
                 SizedBox(
                   height: 24,
                 ),

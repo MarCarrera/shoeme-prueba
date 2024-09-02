@@ -31,6 +31,27 @@ Future<List<Calzado>> getShoes() async {
   }
 }
 
+Future<List<Calzado>> getShoesById({required String idAlmacen}) async {
+  var data = {'opcion': '2', 'id_almacen': idAlmacen};
+  try {
+    final response = await http.post(
+      url,
+      body: data,
+    );
+
+    if (response.statusCode == 200) {
+      print(response.body);
+      var jsonResponse = jsonDecode(response.body) as List;
+      return jsonResponse.map((item) => Calzado.fromJson(item)).toList();
+    } else {
+      throw Exception('Error al obtener entrenamientos');
+    }
+  } catch (e) {
+    print('Error: $e');
+    return [];
+  }
+}
+
 Future<bool> addNewShoe(
     {required String modelo,
     required String marca,
@@ -80,5 +101,26 @@ Future<bool> deleteShoe({required String idCalzado}) async {
   } catch (e) {
     print('Error: $e');
     return false;
+  }
+}
+
+Future<List<Sucursal>> getSucursales() async {
+  var data = {'opcion': '6'};
+  try {
+    final response = await http.post(
+      url,
+      body: data,
+    );
+
+    if (response.statusCode == 200) {
+      //print(response.body);
+      var jsonResponse = jsonDecode(response.body) as List;
+      return jsonResponse.map((item) => Sucursal.fromJson(item)).toList();
+    } else {
+      throw Exception('Error al obtener entrenamientos');
+    }
+  } catch (e) {
+    print('Error: $e');
+    return [];
   }
 }

@@ -28,3 +28,17 @@ class Calzado {
         nombreAlmacen: json['nombre_almacen']);
   }
 }
+
+class Sucursal {
+  final int idSucursal;
+  final String nombre;
+
+  Sucursal({required this.idSucursal, required this.nombre});
+
+  factory Sucursal.fromJson(Map<String, dynamic> json) {
+    return Sucursal(
+      idSucursal: json['id_almacen'] ?? 0, // Default value if null
+      nombre: json['nombre'] ?? '',
+    );
+  }
+}
