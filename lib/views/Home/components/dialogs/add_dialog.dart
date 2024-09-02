@@ -13,7 +13,7 @@ class AddDialog extends StatefulWidget {
   final TextEditingController existenciaC;
   final TextEditingController almacenC;
   final bool obscureText;
-  final Function onRegisterSuccess;
+  final Function onRefreshSuccess;
   
 
   const AddDialog({
@@ -26,7 +26,7 @@ class AddDialog extends StatefulWidget {
     required this.existenciaC,
     required this.almacenC,
     this.obscureText = false, 
-    required this.onRegisterSuccess,
+    required this.onRefreshSuccess,
   });
 
   @override
@@ -167,7 +167,7 @@ class _AddDialogState extends State<AddDialog> {
       const SnackBar(content: Text('Calzado agregado con éxito.')),
     );
     // Llamar al callback para refrescar la vista de HomePage
-    widget.onRegisterSuccess();
+    widget.onRefreshSuccess();
   } else {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('No se pudo agregar el calzado.')),
@@ -190,7 +190,7 @@ void showEditDialog({
   required TextEditingController existenciaC,
   required TextEditingController almacenC,
   bool obscureText = false,
-  required Function onRegisterSuccess, // Nuevo parámetro
+  required Function onRefreshSuccess, // Nuevo parámetro
 }) {
   showDialog(
     context: context,
@@ -204,7 +204,7 @@ void showEditDialog({
         precioC: precioC,
         existenciaC: existenciaC,
         almacenC: almacenC,
-        onRegisterSuccess: onRegisterSuccess, // Pasar el callback al dialogo
+        onRefreshSuccess: onRefreshSuccess, // Pasar el callback al dialogo
       );
     },
   );

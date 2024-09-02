@@ -32,19 +32,22 @@ class _HomePageState extends State<HomePage> {
       futureCalzado = getShoes();
     });
   }
+
   //actualizar el futuro al consultar calzados por sucursal
   void _updateCalzados(List<Calzado> calzados) {
     setState(() {
       futureCalzado = Future.value(calzados);
     });
   }
+
   void _onCalzadosSelected(List<Calzado> calzados) {
     setState(() {
       if (calzados.isEmpty) {
         hasCalzados = false;
       } else {
         hasCalzados = true;
-        futureCalzado = Future.value(calzados); // Actualiza la lista de calzados
+        futureCalzado =
+            Future.value(calzados); // Actualiza la lista de calzados
       }
     });
   }
@@ -59,60 +62,71 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               height: 10,
             ),
-            Column(
-              children: [
-                SearchInput(onCalzadosSelected: _updateCalzados),
-                SizedBox(
-                  height: 24,
-                ),
-                Expanded(
-                  child: FutureBuilder<List<Calzado>>(
-                    future: futureCalzado,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        // Muestra un indicador de carga mientras los datos se están cargando
-                        return Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        // Muestra un mensaje de error
-                        return Center(child: Text('Error: ${snapshot.error}'));
-                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        // Muestra un mensaje si no hay datos disponibles
-                        return Center(
-                            child: Text('No hay calzados disponibles'));
-                      } else {
-                        // Ordena la lista por id de manera descendiente
-                        final calzados = snapshot.data!
-                          ..sort((a, b) => b.idCalzado.compareTo(a.idCalzado));
-                        return ListView.builder(
-                          itemCount: calzados.length,
-                          itemBuilder: (context, index) {
-                            final calzado = calzados[index];
-                            return ProductCard(
-                              marca: calzado.marca,
-                              modelo: calzado.modelo,
-                              precio: calzado.precio,
-                              numero: calzado.numPie.toString(),
-                              existencia: calzado.existencia.toString(),
-                              sucursal: calzado.nombreAlmacen,
-                              idCalzado: calzado.idCalzado.toString(), 
-                              onRegisterSuccess: _refreshData,
-                            );
-                          },
-                        );
-                      }
-                    },
+            RefreshIndicator(
+              onRefresh: () async {
+                _refreshData();
+              },
+              child: Column(
+                children: [
+                  SearchInput(
+                      onCalzadosSelected: _updateCalzados,
+                      onRefreshSuccess: _refreshData),
+                  SizedBox(
+                    height: 24,
                   ),
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-                // Botón agregar calzado
-              ],
+                  Expanded(
+                    child: FutureBuilder<List<Calzado>>(
+                      future: futureCalzado,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          // Muestra un indicador de carga mientras los datos se están cargando
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          // Muestra un mensaje de error
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
+                        } else if (!snapshot.hasData ||
+                            snapshot.data!.isEmpty) {
+                          // Muestra un mensaje si no hay datos disponibles
+                          return Center(
+                              child: Text('No hay calzados disponibles'));
+                        } else {
+                          // Ordena la lista por id de manera descendiente
+                          final calzados = snapshot.data!
+                            ..sort(
+                                (a, b) => b.idCalzado.compareTo(a.idCalzado));
+                          return ListView.builder(
+                            itemCount: calzados.length,
+                            itemBuilder: (context, index) {
+                              final calzado = calzados[index];
+                              return ProductCard(
+                                marca: calzado.marca,
+                                modelo: calzado.modelo,
+                                precio: calzado.precio,
+                                numero: calzado.numPie.toString(),
+                                existencia: calzado.existencia.toString(),
+                                sucursal: calzado.nombreAlmacen,
+                                idCalzado: calzado.idCalzado.toString(),
+                                onRegisterSuccess: _refreshData,
+                              );
+                            },
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 24,
+                  ),
+                  // Botón agregar calzado
+                ],
+              ),
             ),
             Positioned(
               bottom: 16,
               right: 16,
-              child: AddButton(onRegisterSuccess: _refreshData),
+              child: AddButton(onRefreshSuccess: _refreshData),
             ),
           ],
         ),

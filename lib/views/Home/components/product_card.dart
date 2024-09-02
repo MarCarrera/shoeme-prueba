@@ -88,7 +88,7 @@ class _ProductCardState extends State<ProductCard> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 15),
       child: Container(
-        height: screenHeight * 0.13, //125,
+        height: screenHeight * 0.154, //125,
         width: screenWidth * 0.9, //350,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
@@ -168,6 +168,14 @@ class _ProductCardState extends State<ProductCard> {
                                   ),
                                 ],
                               ),
+                            ),
+                            Row(
+                              children: [
+                                Text(widget.sucursal,
+                                    style: TextStyle(
+                                        fontSize: fontSize * 0.8,
+                                        fontWeight: FontWeight.w700)),
+                              ],
                             ),
                             SizedBox(
                               height: 6,

@@ -1,13 +1,17 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:shoeme_app/models/view_model.dart';
 
 import '../../../controller/request.dart';
 
 class SearchInput extends StatefulWidget {
+  final Function onRefreshSuccess;
   final Function(List<Calzado>) onCalzadosSelected;
   const SearchInput({
     super.key,
     required this.onCalzadosSelected,
+    required this.onRefreshSuccess,
   });
 
   @override
@@ -16,6 +20,7 @@ class SearchInput extends StatefulWidget {
 
 class _SearchInputState extends State<SearchInput> {
   String? selectedSucursalName;
+  bool isSearched = false;
   @override
   void initState() {
     super.initState();
@@ -27,8 +32,6 @@ class _SearchInputState extends State<SearchInput> {
     final screenWidth = MediaQuery.of(context).size.width;
     double fontSize = screenHeight * 0.02;
     double paddingSize = screenWidth * 0.05;
-
-    final String nombreSucursal;
 
     void _showSearchModal(
         BuildContext context, Function(List<Calzado>) onCalzadosSelected) {
@@ -56,10 +59,10 @@ class _SearchInputState extends State<SearchInput> {
                         title: Text(item.nombre),
                         onTap: () async {
                           setState(() {
-                        selectedSucursalName = item.nombre;
-                        });
+                            selectedSucursalName = item.nombre;
+                            isSearched = true;
+                          });
                           Navigator.pop(context);
-                          print('seleccionado: ${item.idSucursal}');
                           List<Calzado> calzados = await getShoesById(
                               idAlmacen: item.idSucursal.toString());
                           //se notifica a Home los calzados obtenidos
@@ -101,14 +104,21 @@ class _SearchInputState extends State<SearchInput> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  selectedSucursalName ?? 'Buscar modelo', 
+                  selectedSucursalName ?? 'Buscar modelo',
                   style: TextStyle(fontSize: fontSize * 0.9),
                 ),
                 GestureDetector(
                     onTap: () {
-                      print('Buscar..');
+                      if (isSearched) {
+                        widget.onRefreshSuccess();
+                        setState(() {
+                          selectedSucursalName = null;
+                        });
+                      } 
                     },
-                    child: Icon(Icons.search))
+                    child: isSearched
+                        ? Icon(Icons.close_rounded)
+                        : Icon(Icons.search))
               ],
             ),
           ),

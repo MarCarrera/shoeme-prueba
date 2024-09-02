@@ -4,10 +4,10 @@ import '../../../utils/constans.dart';
 import 'dialogs/add_dialog.dart';
 
 class AddButton extends StatefulWidget {
-  final Function onRegisterSuccess;
+  final Function onRefreshSuccess;
   const AddButton({
     super.key,
-    required this.onRegisterSuccess,
+    required this.onRefreshSuccess,
   });
 
   @override
@@ -32,7 +32,7 @@ class _AddButtonState extends State<AddButton> {
       precioC: precioC,
       existenciaC: existenciaC,
       almacenC: almacenC,
-      onRegisterSuccess: widget.onRegisterSuccess,
+      onRefreshSuccess: widget.onRefreshSuccess,
     );
   }
 
